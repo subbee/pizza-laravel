@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PizzaController; // ⬅️ EZ AZ ÚJ SOR
@@ -21,4 +22,7 @@ Route::middleware('auth')->group(function () {
 // ⬅️ EZ AZ ÚJ ÚTVONAL A 4. PONTHOZ
 Route::get('/menu', [PizzaController::class, 'index'])->name('pizza.menu');
 
+// 5. PONT: Kapcsolat oldal
+Route::get('/contact', [ContactController::class, 'show'])->name('contact.show'); // Az űrlap megjelenítése
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store'); // Az űrlap feldolgozása
 require __DIR__.'/auth.php';
