@@ -10,6 +10,21 @@ use Illuminate\Http\RedirectResponse; // Redirect válaszhoz
 class ContactController extends Controller
 {
     /**
+     * Megjeleníti az összes üzenetet fordított időrendben (6. pont).
+     * Csak bejelentkezett felhasználók érhetik el (ezt az útvonal middleware biztosítja).
+     */
+    public function index(): View
+    {
+        // Lekérdezzük az összes üzenetet, a legfrissebbel kezdve
+        $messages = Message::latest()->get(); // 'latest()' a created_at alapján rendez csökkenő sorrendbe
+
+        return view('messages.index', [
+            'messages' => $messages,
+            'pageTitle' => 'Beérkezett Üzenetek'
+        ]);
+    }
+
+    /**
      * Megjeleníti a kapcsolat űrlapot (5. pont).
      */
     public function show(): View
@@ -43,3 +58,4 @@ class ContactController extends Controller
         return redirect()->route('contact.show')->with('success', 'Üzenetét sikeresen elküldtük!');
     }
 }
+
