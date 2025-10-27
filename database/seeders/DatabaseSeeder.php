@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Seeders; // EZ A HIÁNYZÓ SOR KELL!
+namespace Database\Seeders;
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\AdminUserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,7 +13,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            AdminUserSeeder::class, 
+            AdminUserSeeder::class,     // 2. Pont: Admin/Felhasználó
+            IngredientSeeder::class,    // 4. Pont: Összetevők
+            PizzaSeeder::class,         // 4. Pont: Pizzák és Kapcsolat
         ]);
     }
 }
