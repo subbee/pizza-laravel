@@ -9,20 +9,22 @@ use Illuminate\View\View; // Import the View class
 class PizzaController extends Controller
 {
     /**
-     * Display all pizzas with their ingredients (Task 4).
+     * Display all pizzas with their kategoria (Task 4 - Updated structure).
      *
      * @return \Illuminate\View\View
      */
     public function index(): View
     {
-        // Query all pizzas and eagerly load their ingredients relationship (using ORM)
-        // This helps avoid the N+1 query problem.
-        $pizzas = Pizza::with('ingredients')->orderBy('name')->get(); // Get all pizzas with ingredients, ordered by name
+        
+        $pizzas = Pizza::with('kategoria') 
+                       ->orderBy('nev')    
+                       ->get();
 
-        // Pass the data (the collection of pizzas) to the view
-        return view('pizza.menu', [
+        
+        return view('pizza.menu', [ 
             'pizzas' => $pizzas,
-            'pageTitle' => 'Pizza Menü' // Optional: Set a title for the page
+            'pageTitle' => 'Pizza Menü (Új Struktúra)'
         ]);
     }
 }
+

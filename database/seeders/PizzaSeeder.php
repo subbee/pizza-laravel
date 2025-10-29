@@ -2,69 +2,63 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Pizza; // Használjuk a Modellt
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema; // Szükséges
 
 class PizzaSeeder extends Seeder
 {
     /**
-     * Futtatja a pizzák és a hozzájuk tartozó összetevők feltöltését.
+     * Run the database seeds.
+     * Beolvassa a pizza.txt fájlt és feltölti az adatbázist.
      */
     public function run(): void
     {
-        // Összetevők betöltése, hogy könnyen elérhetőek legyenek
-        $ingredients = DB::table('ingredients')->pluck('id', 'name')->toArray();
+        // Külső kulcsok kikapcsolása a truncate miatt (a rendeles tábla hivatkozhat rá)
+        Schema::disableForeignKeyConstraints();
+        Pizza::truncate();
+        Schema::enableForeignKeyConstraints();
 
-        // Pizzák adatai, beleértve a hozzájuk tartozó összetevőket (nevek alapján)
-        $pizzas = [
-            [
-                'name' => 'Margherita',
-                'price' => 2000,
-                'ingredients' => ['paradicsomszósz', 'mozzarella'],
-            ],
-            [
-                'name' => 'Prosciutto',
-                'price' => 2400,
-                'ingredients' => ['paradicsomszósz', 'mozzarella', 'sonka'],
-            ],
-            [
-                'name' => 'Funghi',
-                'price' => 2200,
-                'ingredients' => ['paradicsomszósz', 'mozzarella', 'gomba'],
-            ],
-            [
-                'name' => 'Diavola',
-                'price' => 2800,
-                'ingredients' => ['paradicsomszósz', 'mozzarella', 'csípős szalámi', 'chili pehely'],
-            ],
-            // Ide jöhetnek további pizzák
-        ];
+        $file_path = database_path('data/pizza.txt');
 
-        foreach ($pizzas as $pizzaData) {
-            // 1. Pizza beszúrása és az ID lekérése
-            $pizzaId = DB::table('pizzas')->insertGetId([
-                'name' => $pizzaData['name'],
-                'price' => $pizzaData['price'],
-                'updated_at' => now(),
-                'created_at' => now(),
-            ]);
+        if (!File::exists($file_path)) {
+            $this->command->error("Hiba: A pizza.txt fájl nem található a 'database/data' mappában!");
+            return;
+        }
 
-            // 2. Kapcsolótábla feltöltése (pizza_ingredient)
-            $pivotData = [];
-            foreach ($pizzaData['ingredients'] as $ingredientName) {
-                // Ellenőrizzük, hogy az összetevő létezik-e, mielőtt beszúrjuk
-                if (isset($ingredients[$ingredientName])) {
-                    $pivotData[] = [
-                        'pizza_id' => $pizzaId,
-                        'ingredient_id' => $ingredients[$ingredientName],
-                    ];
-                }
+        $file = File::get($file_path);
+        $lines = explode(PHP_EOL, $file);
+
+        $data = [];
+        $isFirstLine = true; // Fejléc átugrása (nev, kategorianev, vegetarianus)
+
+        foreach ($lines as $line) {
+            if (empty(trim($line))) continue;
+            if ($isFirstLine) { $isFirstLine = false; continue; }
+
+            $parts = explode("\t", $line);
+
+            // Ellenőrizzük, hogy a kategórianév ne legyen üres
+            if (count($parts) === 3 && !empty(trim($parts[1]))) {
+                $data[] = [
+                    'nev' => trim($parts[0]),
+                    'kategorianev' => trim($parts[1]),
+                    'vegetarianus' => (int)trim($parts[2]) === 1, // 1 (igaz) vagy 0 (hamis)
+                ];
+            } elseif (count($parts) === 3) {
+                 $this->command->warn("Figyelmeztetés: Üres kategórianév a pizza.txt fájlban a következő pizzánál: " . trim($parts[0]));
             }
-            
-            // Csak akkor szúrunk be, ha van hozzárendelt összetevő
-            if (!empty($pivotData)) {
-                DB::table('pizza_ingredient')->insert($pivotData);
-            }
+        }
+
+        try {
+            Pizza::insert($data);
+            $this->command->info(count($data) . " pizza sikeresen beillesztve.");
+        } catch (\Illuminate\Database\QueryException $e) {
+             $this->command->error("Hiba a pizzák beillesztésekor: " . $e->getMessage());
+             
         }
     }
 }
+
