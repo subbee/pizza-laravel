@@ -15,23 +15,18 @@ class PizzaController extends Controller
      */
     public function index(): View
     {
-        
-        $pizzas = Pizza::with('kategoria') 
-                       ->orderBy('nev')    
+
+        $pizzas = Pizza::with('kategoria')
+                       ->orderBy('nev')
                        ->get();
 
-        
-        return view('pizza.menu', [ 
+
+        return view('pizza.menu', [
             'pizzas' => $pizzas,
             'pageTitle' => 'Pizza Menü (Új Struktúra)'
         ]);
     }
-    // ...
-use Illuminate\Support\Facades\DB; // Szükséges az aggregált lekérdezéshez
 
-class PizzaController extends Controller
-{
-    // ... (a többi metódus)
 
     // 7. Diagram menü
     public function diagram()
@@ -43,13 +38,13 @@ class PizzaController extends Controller
             ->orderByDesc('total_darab')
             ->limit(10) // Megjelenítjük a top 10 pizzát
             ->get();
-        
+
         // Előkészítjük az adatokat a Chart.js számára
         $labels = $pizzaSales->pluck('pizzanev')->toArray();
         $data = $pizzaSales->pluck('total_darab')->toArray();
-        
+
         return view('pizza.diagram', compact('labels', 'data'));
     }
-}
+
 }
 
