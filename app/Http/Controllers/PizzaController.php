@@ -26,5 +26,30 @@ class PizzaController extends Controller
             'pageTitle' => 'Pizza Menü (Új Struktúra)'
         ]);
     }
+    // ...
+use Illuminate\Support\Facades\DB; // Szükséges az aggregált lekérdezéshez
+
+class PizzaController extends Controller
+{
+    // ... (a többi metódus)
+
+    // 7. Diagram menü
+    public function diagram()
+    {
+        // Lekérdezzük a pizzákat és összesítjük a rendelt darabszámot
+        $pizzaSales = DB::table('rendeles')
+            ->select('pizzanev', DB::raw('SUM(darab) as total_darab'))
+            ->groupBy('pizzanev')
+            ->orderByDesc('total_darab')
+            ->limit(10) // Megjelenítjük a top 10 pizzát
+            ->get();
+        
+        // Előkészítjük az adatokat a Chart.js számára
+        $labels = $pizzaSales->pluck('pizzanev')->toArray();
+        $data = $pizzaSales->pluck('total_darab')->toArray();
+        
+        return view('pizza.diagram', compact('labels', 'data'));
+    }
+}
 }
 

@@ -1,4 +1,5 @@
 <?php
+// app/Models/Message.php
 
 namespace App\Models;
 
@@ -8,17 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
-
-    /**
-     * The attributes that are mass assignable.
-     * Engedélyezzük ezeknek a mezőknek a tömeges kitöltését.
-     *
-     * @var array<int, string>
-     */
+    
+    // Engedélyezzük a tömeges hozzárendelést (nev, email, uzenet)
     protected $fillable = [
-        'name',
+        'nev',
         'email',
-        'subject',
-        'message',
+        'uzenet',
     ];
 }

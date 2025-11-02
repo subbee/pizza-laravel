@@ -43,8 +43,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/menu', [PizzaController::class, 'index'])->name('pizza.menu');
 
 // 5. PONT: Kapcsolat oldal
-Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/kapcsolat', [ContactController::class, 'show'])->name('contact.show');
+Route::post('/kapcsolat', [ContactController::class, 'store'])->name('contact.store');
+Route::middleware(['auth', 'role.registered'])->group(function () {
+    Route::get('/uzenetek', [PizzaController::class, 'messages'])->name('messages.index');
+    Route::get('/diagram', [PizzaController::class, 'diagram'])->name('pizza.diagram');
+});
 
 
 // Breeze autentikációs útvonalak betöltése
