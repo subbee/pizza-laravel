@@ -43,6 +43,7 @@
                 <a class="main-link w-nav-link" href="catering.php">catering</a>
                 <a class="main-link w-nav-link" href="contact.php">contact</a>
             </nav>
+
             <!-- Main navigation ends -->
         </div>
     </div>
