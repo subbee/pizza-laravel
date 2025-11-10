@@ -52,6 +52,22 @@
                 <a class="main-link w-nav-link" href="#">photos</a>
                 <a class="main-link w-nav-link" href="#">catering</a>
                 <a class="main-link w-nav-link" href="{{ route('contact.show') }}">contact</a>
+                @guest
+    <a class="main-link w-nav-link" href="{{ route('login') }}">login</a>
+    @if (Route::has('register'))
+        <a class="main-link w-nav-link" href="{{ route('register') }}">register</a>
+    @endif
+@endguest
+
+@auth
+    <a class="main-link w-nav-link" href="{{ route('dashboard') }}">dashboard</a>
+    <a class="main-link w-nav-link" href="{{ route('logout') }}"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">logout</a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+@endauth
+
             </nav>
             <!-- Main navigation ends -->
         </div>

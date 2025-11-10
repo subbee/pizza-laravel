@@ -13,13 +13,7 @@
                 Kézműves pizzák a legjobb alapanyagokból, egyenesen a kemencéből.  
                 Fedezd fel ízeinket és rendelj még ma!
             </p>
-            <div class="mt-10">
-                {{-- ✅ Javított route, most a működő pizzák oldalra visz --}}
-                <a href="{{ route('pizzak.index') }}"
-                   class="text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 px-8 py-3 transition duration-300">
-                    🍕 Étlap megtekintése
-                </a>
-            </div>
+            
         </div>
     </div>
 
