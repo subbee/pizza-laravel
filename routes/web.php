@@ -1,18 +1,18 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PizzaController;
-use App\Http\Controllers\ContactController; // ⬅️ Ezt az importot ellenőrizd/add hozzá
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Itt regisztrálhatod az alkalmazásod útvonalait.
+| Ezeket a RouteServiceProvider tölti be, és mindegyik
+| a "web" middleware csoportba tartozik.
 |
 */
 
@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // 6. PONT: Üzenetek listázása (csak bejelentkezve)
-    Route::get('/messages', [ContactController::class, 'index'])->name('messages.index'); // ⬅️ EZ AZ ÚJ SOR
+    Route::get('/messages', [ContactController::class, 'index'])->name('messages.index');
 });
 
 // --- Vendégek által is elérhető útvonalak ---
@@ -45,11 +45,16 @@ Route::get('/menu', [PizzaController::class, 'index'])->name('pizza.menu');
 // 5. PONT: Kapcsolat oldal
 Route::get('/kapcsolat', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/kapcsolat', [ContactController::class, 'store'])->name('contact.store');
+
+// Csak regisztráltaknak elérhető funkciók
 Route::middleware(['auth', 'role.registered'])->group(function () {
     Route::get('/uzenetek', [PizzaController::class, 'messages'])->name('messages.index');
     Route::get('/diagram', [PizzaController::class, 'diagram'])->name('pizza.diagram');
 });
 
-
 // Breeze autentikációs útvonalak betöltése
 require __DIR__.'/auth.php';
+
+// --- ÚJ: Pizzák oldal (mi készítettük a menü megjelenítéshez) ---
+Route::get('/pizzak', [PizzaController::class, 'index'])->name('pizzak.index');
+
