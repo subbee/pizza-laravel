@@ -2,63 +2,42 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Pizza; // Használjuk a Modellt
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema; // Szükséges
+use Illuminate\Support\Facades\DB;
 
 class PizzaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     * Beolvassa a pizza.txt fájlt és feltölti az adatbázist.
-     */
     public function run(): void
     {
-        // Külső kulcsok kikapcsolása a truncate miatt (a rendeles tábla hivatkozhat rá)
-        Schema::disableForeignKeyConstraints();
-        Pizza::truncate();
-        Schema::enableForeignKeyConstraints();
+        $file = database_path('data/pizza.txt');
 
-        $file_path = database_path('data/pizza.txt');
+        // beolvassuk a sorokat, üres sorokat kihagyjuk
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        if (!File::exists($file_path)) {
-            $this->command->error("Hiba: A pizza.txt fájl nem található a 'database/data' mappában!");
-            return;
-        }
-
-        $file = File::get($file_path);
-        $lines = explode(PHP_EOL, $file);
-
-        $data = [];
-        $isFirstLine = true; // Fejléc átugrása (nev, kategorianev, vegetarianus)
+        $first = true; // az első sor a fejléc: "nev  kategorianev  vegetarianus"
 
         foreach ($lines as $line) {
-            if (empty(trim($line))) continue;
-            if ($isFirstLine) { $isFirstLine = false; continue; }
+            if ($first) {
+                $first = false;
+                continue; // fejléc kihagyása
+            }
 
+            // 3 oszlop: nev, kategorianev, vegetarianus
             $parts = explode("\t", $line);
 
-            // Ellenőrizzük, hogy a kategórianév ne legyen üres
-            if (count($parts) === 3 && !empty(trim($parts[1]))) {
-                $data[] = [
-                    'nev' => trim($parts[0]),
-                    'kategorianev' => trim($parts[1]),
-                    'vegetarianus' => (int)trim($parts[2]) === 1, // 1 (igaz) vagy 0 (hamis)
-                ];
-            } elseif (count($parts) === 3) {
-                 $this->command->warn("Figyelmeztetés: Üres kategórianév a pizza.txt fájlban a következő pizzánál: " . trim($parts[0]));
+            if (count($parts) < 3) {
+                continue; // ha véletlen hibás sor lenne, átugorjuk
             }
-        }
 
-        try {
-            Pizza::insert($data);
-            $this->command->info(count($data) . " pizza sikeresen beillesztve.");
-        } catch (\Illuminate\Database\QueryException $e) {
-             $this->command->error("Hiba a pizzák beillesztésekor: " . $e->getMessage());
-             
+            [$nev, $kategorianev, $vegetarianus] = $parts;
+
+            DB::table('pizzas')->insert([
+                'nev'          => $nev,
+                'kategorianev' => $kategorianev,
+                'vegetarianus' => (bool) $vegetarianus,
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ]);
         }
     }
 }
-
