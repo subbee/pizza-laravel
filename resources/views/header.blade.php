@@ -45,17 +45,14 @@
             <!-- Main navigation begins -->
             <nav class="nav-menu w-nav-menu">
                 {{-- ✅ Laravel route-ok használata --}}
-                <a class="main-link w-nav-link" href="{{ url('/') }}">home</a>
-                <a class="main-link w-nav-link" href="{{ route('pizzak.index') }}">menu</a>
-                <a class="main-link w-nav-link" href="#">specials</a>
-                <a class="main-link w-nav-link" href="#">about</a>
-                <a class="main-link w-nav-link" href="#">photos</a>
-                <a class="main-link w-nav-link" href="#">catering</a>
-                <a class="main-link w-nav-link" href="{{ route('contact.show') }}">contact</a>
+                <a class="main-link w-nav-link" href="{{ url('/') }}">Főoldal</a>
+                <a class="main-link w-nav-link" href="{{ route('pizzak.index') }}">Menü</a>
+
+                <a class="main-link w-nav-link" href="{{ route('contact.show') }}">Kapcsolat</a>
                 @guest
-    <a class="main-link w-nav-link" href="{{ route('login') }}">login</a>
+    <a class="main-link w-nav-link" href="{{ route('login') }}">Bejelentkezés</a>
     @if (Route::has('register'))
-        <a class="main-link w-nav-link" href="{{ route('register') }}">register</a>
+        <a class="main-link w-nav-link" href="{{ route('register') }}">Regisztráció</a>
     @endif
 @endguest
 

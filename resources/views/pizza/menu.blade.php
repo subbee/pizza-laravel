@@ -1,4 +1,4 @@
-<x-app-layout> {{-- Ez hívja meg a fő layoutot komponensként --}}
+<x-content-layout> {{-- Ez hívja meg a fő layoutot komponensként --}}
     {{-- Fejléc --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -10,8 +10,7 @@
 
 
     <!-- Menu section begins -->
-    <div class="food section">
-        <div class="container w-container">
+
             <div class="row w-row">
                 <!-- First set of four begins -->
 
@@ -50,9 +49,8 @@
                 <!-- Second column of four ends -->
 
             </div>
-        </div>
-    </div>
+
     <!-- Menu section ends -->
 
 
-</x-app-layout> {{-- Layout komponens lezárása --}}
+</x-content-layout> {{-- Layout komponens lezárása --}}

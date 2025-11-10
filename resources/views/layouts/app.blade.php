@@ -45,7 +45,7 @@
     <body class="font-sans antialiased">
 
     @include("header")
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100  bottom-margin-large">
 
 
             <!-- Page Heading -->
@@ -63,8 +63,34 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+
+                        {{ $slot }}
+
             </main>
         </div>
+
+    <!-- Footer section begins -->
+    <footer class="footer bottom-margin-large"  >
+        <div class="footer-nav-section">
+            <div class="w-container" style="padding: 20px">
+                <div class="w-row">
+                    <!-- Footer navigation begins -->
+                    <div class="col w-col w-col-6">
+                        <div class="footer-nav-holder">
+                            <div class="uppercase white-link"><p>&copy; {{ date('Y') }} Pizza Mester. Minden jog fenntartva.</p></div>
+                        </div>
+                    </div>
+                    <!-- Footer navigation ends -->
+                    <!-- Footer social media links begin -->
+                    <div class="align-right col social w-col w-col-6">
+                        <a class="social-icon w-inline-block" href="http://www.Facebook.com" target="_blank"><img src="/assets/images/footer-facebook.svg" alt="Pizza Mester"></a>
+                        <a class="social-icon w-inline-block" href="http://www.Twitter.com"><img src="/assets/images/footer-twitter.svg" alt="Pizza Mester"></a>
+                    </div>
+                    <!-- Footer social media links end -->
+                </div>
+            </div>
+        </div>
+    </footer>
+
     </body>
 </html>
