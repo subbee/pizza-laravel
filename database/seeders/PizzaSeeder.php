@@ -35,8 +35,6 @@ class PizzaSeeder extends Seeder
                 'nev'          => $nev,
                 'kategorianev' => $kategorianev,
                 'vegetarianus' => (bool) $vegetarianus,
-                'created_at'   => now(),
-                'updated_at'   => now(),
             ]);
         }
     }

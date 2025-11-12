@@ -2,49 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pizza; // Import the Pizza Model
+use App\Models\Pizza;
 use Illuminate\Http\Request;
-use Illuminate\View\View; // Import the View class
+use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class PizzaController extends Controller
 {
-    /**
-     * Display all pizzas with their kategoria (Task 4 - Updated structure).
-     *
-     * @return \Illuminate\View\View
-     */
+    // 🍕 Publikus pizza menü
     public function index(): View
     {
-
-        $pizzas = Pizza::with('kategoria')
-                       ->orderBy('nev')
-                       ->get();
-
+        $pizzak = Pizza::with('kategoria')
+            ->orderBy('nev')
+            ->get();
 
         return view('pizza.menu', [
-            'pizzas' => $pizzas,
+            'pizzak' => $pizzak,
             'pageTitle' => 'Pizza Menü (Új Struktúra)'
         ]);
     }
 
-
-    // 7. Diagram menü
+    // 📊 Diagram oldal
     public function diagram()
     {
-        // Lekérdezzük a pizzákat és összesítjük a rendelt darabszámot
         $pizzaSales = DB::table('rendeles')
             ->select('pizzanev', DB::raw('SUM(darab) as total_darab'))
             ->groupBy('pizzanev')
             ->orderByDesc('total_darab')
-            ->limit(10) // Megjelenítjük a top 10 pizzát
+            ->limit(10)
             ->get();
 
-        // Előkészítjük az adatokat a Chart.js számára
         $labels = $pizzaSales->pluck('pizzanev')->toArray();
         $data = $pizzaSales->pluck('total_darab')->toArray();
 
         return view('pizza.diagram', compact('labels', 'data'));
     }
-
 }
 
