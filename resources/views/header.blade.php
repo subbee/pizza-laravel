@@ -48,7 +48,8 @@
                 <a class="main-link w-nav-link" href="{{ url('/') }}">Főoldal</a>
                 <a class="main-link w-nav-link" href="{{ route('pizzak.index') }}">Menü</a>
 
-                <a class="main-link w-nav-link" href="{{ route('contact.show') }}">Kapcsolat</a>
+                <a class="main-link w-nav-link" href="{{ route('contact.create') }}">Kapcsolat</a>
+
                 @guest
     <a class="main-link w-nav-link" href="{{ route('login') }}">Bejelentkezés</a>
     @if (Route::has('register'))
@@ -58,6 +59,10 @@
 
 @auth
     <a class="main-link w-nav-link" href="{{ route('dashboard') }}">dashboard</a>
+    @auth
+<a class="main-link w-nav-link" href="{{ route('messages.index') }}">ÜZENETEK</a>
+@endauth
+
     <a class="main-link w-nav-link" href="{{ route('logout') }}"
        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">logout</a>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

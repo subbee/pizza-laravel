@@ -1,38 +1,27 @@
 <?php
-// app/Http/Controllers/ContactController.php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Message; // Üzenet modell
+use App\Models\Contact;
 
 class ContactController extends Controller
 {
-    // 1. Megjeleníti a Kapcsolat űrlapot
-    public function show()
+    public function create()
     {
-        return view('contact.show');
+        return view('contact');
     }
 
-    // 2. A beküldött űrlap adatainak feldolgozása (POST)
     public function store(Request $request)
     {
-        // KÖTELEZŐ: Szerver oldali validáció
-        $validatedData = $request->validate([
-            'nev' => 'required|string|max:100',
-            'email' => 'required|email|max:100',
-            'uzenet' => 'required|string|min:10',
-        ], [
-            'nev.required' => 'A név megadása kötelező.',
-            'email.required' => 'Az e-mail cím megadása kötelező.',
-            'uzenet.required' => 'Az üzenet mező kitöltése kötelező.',
-            'uzenet.min' => 'Az üzenetnek legalább :min karakter hosszúnak kell lennie.',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string',
         ]);
 
-        // KÖTELEZŐ: Adatok mentése az adatbázisba
-        Message::create($validatedData);
+        Contact::create($validated);
 
-        // Visszajelzés
-        return redirect()->route('contact.show')->with('success', 'Köszönjük üzenetét! Sikeresen rögzítettük.');
+        return redirect()->route('contact.create')->with('success', 'Köszönjük, üzenetedet megkaptuk!');
     }
 }

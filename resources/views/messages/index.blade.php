@@ -1,69 +1,47 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ $pageTitle ?? 'Beérkezett Üzenetek' }}
-        </h2>
-    </x-slot>
+<x-app-layout> {{-- Fő layout --}}
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+    <!-- Hero szekció -->
+    <section class="section-hero title">
+        <div class="container w-container" style="text-align:center;">
+            <h1 class="bottom-margin-extra-small" style="color:white; text-shadow:2px 2px 5px rgba(0,0,0,0.4);">
+                Beérkezett üzenetek
+            </h1>
+            <h3 class="hero-sub-title" style="color:white;">
+                Az összes kapcsolatfelvételi üzenet egy helyen.
+            </h3>
+        </div>
+    </section>
 
-                    <h2 class="text-2xl font-bold mb-6">Beérkezett Üzenetek Listája</h2>
-
-                    @if($messages->isEmpty())
-                        <p class="text-gray-500">Még nem érkezett üzenet.</p>
-                    @else
-                        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-6">
-                                            Küldő Neve
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Email
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Tárgy
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Üzenet (részlet)
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Küldés ideje
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($messages as $message)
-                                        <tr class="bg-white border-b hover:bg-gray-50">
-                                            <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                                                {{ $message->name }}
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                {{ $message->email }}
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                {{ $message->subject }}
-                                            </td>
-                                            <td class="py-4 px-6 max-w-xs truncate"> {{-- Csak az első pár szó --}}
-                                                {{ Str::limit($message->message, 50) }}
-                                            </td>
-                                            <td class="py-4 px-6 whitespace-nowrap">
-                                                {{-- Dátum formázása olvashatóbbra --}}
-                                                {{ $message->created_at->format('Y-m-d H:i') }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-
-                </div>
+    <!-- Üzenetek táblázat -->
+    <section style="background-color:#f8f8f8; padding:60px 0;">
+        <div class="container w-container">
+            <div class="block-main-holder" style="background:white; padding:30px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.1);">
+                @if($messages->isEmpty())
+                    <p style="text-align:center; color:#666;">Még nincs üzenet.</p>
+                @else
+                    <table style="width:100%; border-collapse:collapse;">
+                        <thead>
+                            <tr style="background-color:#d32f2f; color:white;">
+                                <th style="padding:12px; text-align:left; border-radius:8px 0 0 0;">Név</th>
+                                <th style="padding:12px; text-align:left;">Email</th>
+                                <th style="padding:12px; text-align:left;">Üzenet</th>
+                                <th style="padding:12px; text-align:left; border-radius:0 8px 0 0;">Dátum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($messages as $message)
+                                <tr style="border-bottom:1px solid #eee;">
+                                    <td style="padding:10px;">{{ $message->name }}</td>
+                                    <td style="padding:10px; color:#0073e6;">{{ $message->email }}</td>
+                                    <td style="padding:10px;">{{ $message->message }}</td>
+                                    <td style="padding:10px; color:#777;">{{ $message->created_at->format('Y.m.d H:i') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
         </div>
-    </div>
+    </section>
+
 </x-app-layout>

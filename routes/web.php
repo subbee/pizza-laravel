@@ -4,57 +4,47 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
 | Itt regisztrálhatod az alkalmazásod útvonalait.
 | Ezeket a RouteServiceProvider tölti be, és mindegyik
 | a "web" middleware csoportba tartozik.
-|
+|--------------------------------------------------------------------------
 */
 
-// 3. PONT: Főoldal (welcome.blade.php)
+// 🌐 Főoldal
 Route::get('/', function () {
     return view('welcome');
 });
 
-// --- Breeze alapértelmezett útvonalak ---
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// 🍕 Pizza menü
+Route::get('/menu', [PizzaController::class, 'index'])->name('pizza.menu');
+Route::get('/pizzak', [PizzaController::class, 'index'])->name('pizzak.index');
 
-// Csak bejelentkezett felhasználók által elérhető útvonalak
-Route::middleware('auth')->group(function () {
-    // Profil útvonalak (Breeze generálta)
+// 💌 Kapcsolat oldal (publikus)
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// 🔒 Csak bejelentkezett felhasználóknak
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Saját profil (Laravel Breeze generálta)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // 6. PONT: Üzenetek listázása (csak bejelentkezve)
-    Route::get('/messages', [ContactController::class, 'index'])->name('messages.index');
+    // Üzenetek megtekintése (kapcsolat űrlap beérkezett üzenetek)
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
 
-// --- Vendégek által is elérhető útvonalak ---
-
-// 4. PONT: Pizza Menü
-Route::get('/menu', [PizzaController::class, 'index'])->name('pizza.menu');
-
-// 5. PONT: Kapcsolat oldal
-Route::get('/kapcsolat', [ContactController::class, 'show'])->name('contact.show');
-Route::post('/kapcsolat', [ContactController::class, 'store'])->name('contact.store');
-
-// Csak regisztráltaknak elérhető funkciók
-Route::middleware(['auth', 'role.registered'])->group(function () {
-    Route::get('/uzenetek', [PizzaController::class, 'messages'])->name('messages.index');
-    Route::get('/diagram', [PizzaController::class, 'diagram'])->name('pizza.diagram');
-});
-
-// Breeze autentikációs útvonalak betöltése
+// Laravel Breeze auth útvonalak
 require __DIR__.'/auth.php';
-
-// --- ÚJ: Pizzák oldal (mi készítettük a menü megjelenítéshez) ---
-Route::get('/pizzak', [PizzaController::class, 'index'])->name('pizzak.index');
-
