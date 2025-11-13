@@ -4,21 +4,21 @@
         <div class="w-row">
             <div class="top-info-info-column-first w-col w-col-4">
                 <div class="top-info-info-text">
-                    <img src="/assets/images/location.png" alt="N.Y. Pizza">
-                    <strong>123 Broadway St., New York, NY 12345</strong>
+                    <img src="/assets/images/location.png" alt="Pizza Mester">
+                    <strong>1234 Budapest, Pizza u. 123. </strong>
                 </div>
             </div>
             <div class="top-info-info-column-center w-col w-col-4">
                 <div class="top-info-info-text">
-                    <img src="/assets/images/ph.png" alt="N.Y. Pizza">
-                    &nbsp;<strong>(123) 456 - 7890. Free delivery over $15!</strong>
+                    <img src="/assets/images/ph.png" alt="Pizza Mester">
+                    &nbsp;<strong>INGYENES KISZÁLLÍTÁS 10.000 Ft felett</strong>
                 </div>
             </div>
             <div class="top-info-info-column-last w-col w-col-4">
                 <div class="top-info-info-text">
-                    <strong>We are social! Like & follow us.</strong>
-                    <a href="http://www.facebook.com"><img src="/assets/images/nav-facebook.svg" alt="N.Y. Pizza"></a>
-                    <a href="http://www.twitter.com"><img src="/assets/images/nav-twitter.svg" alt="N.Y. Pizza"></a>
+                    <strong>Közösségi oldalaink</strong>
+                    <a href="http://www.facebook.com"><img src="/assets/images/nav-facebook.svg" alt="Pizza Mester"></a>
+                    <a href="http://www.twitter.com"><img src="/assets/images/nav-twitter.svg" alt="Pizza Mester"></a>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
 
             <!-- Logo section begins -->
             <a class="brand w-nav-brand" href="{{ url('/') }}">
-                <img src="/assets/images/logo.png" alt="N.Y. Pizza">
+                <img src="/assets/images/logo.png" alt="Pizza Mester">
             </a>
             <!-- Logo section ends -->
 
@@ -59,11 +59,18 @@
 
                 @auth
                     <a class="main-link w-nav-link" href="{{ route('dashboard') }}">dashboard</a>
-                    @admin
-                    <a class="main-link w-nav-link" href="{{ route('admin.pizzak.index') }}">admin</a>
-                @endadmin
 
-                    <a class="main-link w-nav-link" href="{{ route('messages.index') }}">ÜZENETEK</a>
+                    @admin
+                    <div class="dropdown">
+                        <a class="main-link w-nav-link" href="#">Admin ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="w-nav-link" href="{{ route('admin.pizzak.index') }}">Pizzák</a></li>
+                            <li><a class="w-nav-link" href="{{ route('admin.messages.index') }}">Üzenetek</a></li>
+                            <li><a class="w-nav-link" href="{{ route('admin.orders.index') }}">Rendelések</a></li>
+                        </ul>
+                    </div>
+                    @endadmin
+
 
 
                     <a class="main-link w-nav-link" href="{{ route('logout') }}"

@@ -17,20 +17,17 @@ class Rendeles extends Model
      */
     protected $table = 'rendeles'; // Fontos, mert a migrációban 'rendeles' a név
 
-    /**
-     * The primary key associated with the table.
-     * Mivel nem 'id' a kulcs, meg kell adni.
-     * @var string
-     */
-    protected $primaryKey = 'az';
+
 
     /**
      * The attributes that are mass assignable.
      * @var array<int, string>
      */
     protected $fillable = [
-        'pizzanev',
+        'pizza_id',
+        'user_id',
         'darab',
+        'cim',
         'felvetel',
         'kiszallitas',
     ];
@@ -59,7 +56,12 @@ class Rendeles extends Model
     public function pizza(): BelongsTo
     {
         // Meg kell adni a külső kulcsot ('pizzanev') és a tulajdonos kulcsát ('nev')
-        return $this->belongsTo(Pizza::class, 'pizzanev', 'nev');
+        return $this->belongsTo(Pizza::class, 'pizza_id', 'id');
+    }
+    public function user(): BelongsTo
+    {
+        // Meg kell adni a külső kulcsot ('pizzanev') és a tulajdonos kulcsát ('nev')
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
 

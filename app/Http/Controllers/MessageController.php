@@ -18,7 +18,7 @@ class MessageController extends Controller
     // Üzenetek listázása
     public function index()
     {
-        $messages = Contact::where('email', Auth::user()->email)->orderBy('created_at', 'desc')->get(); //Mindenki csak a saját üzenetét látja
+        $messages = Contact::orderBy('created_at', 'desc')->get();
         return view('messages.index', compact('messages'));
     }
 }

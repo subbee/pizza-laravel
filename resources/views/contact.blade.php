@@ -54,7 +54,7 @@
                     <article class="block-main-holder left">
                         <h2 class="bottom-margin-medium">Elérhetőségeink</h2>
                         <p style="text-align:justify;">
-                            123 Broadway St., New York, NY 12345<br>
+                            1234 Budapest, Pizza u. 123.<br>
                             Telefon: (123) 456-7890<br>
                             Email: info@pizzamester.hu
                         </p>

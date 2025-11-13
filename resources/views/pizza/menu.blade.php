@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                             <br />
-                            <a class="small-text" href="#">Kosárba →</a>
+                            <a class="small-text" href="{{route("order.create", $pizza->id)}}">Kosárba →</a>
                         </div>
                     </div>
                 </div>

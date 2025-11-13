@@ -11,12 +11,6 @@ class Pizza extends Model
 {
     use HasFactory; // Ez a sor lehet, hogy már ott van
 
-    /**
-     * The primary key associated with the table.
-     * Mivel nem 'id' a kulcs, meg kell adni.
-     * @var string
-     */
-    protected $primaryKey = 'nev';
 
     /**
      * Indicates if the model's ID is auto-incrementing.

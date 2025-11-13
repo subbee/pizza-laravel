@@ -3,35 +3,40 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Rendeles;
+use App\Models\User;
+use App\Models\Pizza;
+use Faker\Factory as Faker;
 
 class RendelesSeeder extends Seeder
 {
     public function run(): void
     {
-        $file = database_path('data/rendeles.txt');
-        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $faker = Faker::create();
 
-        $first = true;
-        foreach ($lines as $line) {
-            if ($first) {
-                $first = false; // fejléc kihagyása
-                continue;
-            }
+        // Lekérjük a felhasználókat és pizzákat
+        $users = User::all();
+        $pizzas = Pizza::all();
 
-            $parts = explode("\t", $line);
+        if ($users->isEmpty() || $pizzas->isEmpty()) {
+            $this->command->info("Nincs felhasználó vagy pizza a seedeléshez!");
+            return;
+        }
 
-            if (count($parts) < 5) continue; // ha hibás sor, kihagyjuk
+        for ($i = 0; $i < 100; $i++) {
+            // Random felvétel az elmúlt 20 napból
+            $felvetel = $faker->dateTimeBetween('-20 days', 'now');
 
-            [$pizzanev, $darab, $felvetel, $kiszallitas] = array_slice($parts, 1);
+            // Kiszállítás: felvétel után 0-2 órával
+            $kiszallitas = (clone $felvetel)->modify('+' . rand(0, 2) . ' hours');
 
-            DB::table('rendeles')->insert([
-                'pizzanev' => $pizzanev,
-                'darab' => (int)$darab,
+            Rendeles::create([
+                'user_id' => $users->random()->id,
+                'pizza_id' => $pizzas->random()->id,
+                'darab' => rand(1, 5),
+                'cim' => $faker->address(),
                 'felvetel' => $felvetel,
                 'kiszallitas' => $kiszallitas,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
     }
