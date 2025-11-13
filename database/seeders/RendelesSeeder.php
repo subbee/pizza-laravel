@@ -23,9 +23,9 @@ class RendelesSeeder extends Seeder
             return;
         }
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 3000; $i++) {
             // Random felvétel az elmúlt 20 napból
-            $felvetel = $faker->dateTimeBetween('-20 days', 'now');
+            $felvetel = $faker->dateTimeBetween('-360 days', 'now');
 
             // Kiszállítás: felvétel után 0-2 órával
             $kiszallitas = (clone $felvetel)->modify('+' . rand(0, 2) . ' hours');

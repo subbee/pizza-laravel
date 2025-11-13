@@ -93,4 +93,5 @@
     </footer>
 
     </body>
+    @stack("footer")
 </html>

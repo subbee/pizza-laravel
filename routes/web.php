@@ -39,6 +39,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/rendeles/{pizza_id}', [OrderController::class, 'create'])->name("order.create");
     Route::post('/rendeles-leadas', [OrderController::class, 'store'])->name("order.store");
+    Route::get('/rendelesek/chart', [OrderController::class, 'chartData']);
+
 
     // Üzenetek megtekintése
 
@@ -56,6 +58,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/messages', [MessageController::class, 'index'])->name('admin.messages.index');
 
 });
+
+
 
 require __DIR__.'/auth.php';
 
