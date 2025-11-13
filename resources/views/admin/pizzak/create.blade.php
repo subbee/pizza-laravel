@@ -34,10 +34,17 @@
             {{-- Kategória neve --}}
             <div class="mb-4">
                 <label for="kategorianev" class="block text-sm font-medium text-gray-700">Kategória</label>
-                <input type="text" id="kategorianev" name="kategorianev"
-                       value="{{ old('kategorianev') }}"
-                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                       placeholder="Pl. apród, lovag, király...">
+                <select id="kategorianev" name="kategorianev"
+                        class="">
+                    @foreach(App\Models\Kategoria::all() as $kategoria)
+                        <option value="{{ $kategoria->nev }}"
+                            {{ old('kategorianev') == $kategoria->nev ? 'selected' : '' }}>
+                            {{ $kategoria->nev }}
+                        </option>
+                    @endforeach
+                </select>
+
+
             </div>
 
             {{-- Vegetáriánus --}}

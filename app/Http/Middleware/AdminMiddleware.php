@@ -11,7 +11,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Feltételezzük, hogy a felhasználónak van egy "is_admin" mezője az adatbázisban
-        if (!Auth::check() || !Auth::user()->is_admin) {
+        if (!Auth::check() || !Auth::user()->role == "admin1") {
             abort(403, 'Ehhez az oldalhoz nincs jogosultságod.');
         }
 

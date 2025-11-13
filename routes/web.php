@@ -22,15 +22,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 🍕 Pizza menü (publikus)
+//  Pizza menü (publikus)
 Route::get('/menu', [PizzaController::class, 'index'])->name('pizza.menu');
 Route::get('/pizzak', [PizzaController::class, 'index'])->name('pizzak.index');
 
-// 💌 Kapcsolat oldal (publikus)
+//  Kapcsolat oldal (publikus)
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// 🔒 Csak bejelentkezett, hitelesített felhasználóknak
+//  Csak bejelentkezett, hitelesített felhasználóknak
 Route::middleware(['auth', 'verified'])->group(function () {
     // Saját profil (Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -46,18 +46,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-// 🧑‍💼 Admin felület — csak bejelentkezett adminoknak
+// Admin felület — csak bejelentkezett adminoknak
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/pizzak', [PizzaCrudController::class, 'index'])
-        ->name('admin.pizzak.index');
+
+    Route::resource('/admin/pizzak', PizzaCrudController::class)->names("admin.pizzak");
+
     // ide jönnek majd a CRUD útvonalak (create/store/edit/update/destroy)
 });
 
-// 🔐 Laravel Breeze alapútvonalak
 require __DIR__.'/auth.php';
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::resource('admin/pizzak', PizzaCrudController::class)
-        ->names('admin.pizzak')
-        ->except(['show']);
-});
 

@@ -51,24 +51,27 @@
                 <a class="main-link w-nav-link" href="{{ route('contact.create') }}">Kapcsolat</a>
 
                 @guest
-    <a class="main-link w-nav-link" href="{{ route('login') }}">Bejelentkezés</a>
-    @if (Route::has('register'))
-        <a class="main-link w-nav-link" href="{{ route('register') }}">Regisztráció</a>
-    @endif
-@endguest
+                    <a class="main-link w-nav-link" href="{{ route('login') }}">Bejelentkezés</a>
+                    @if (Route::has('register'))
+                        <a class="main-link w-nav-link" href="{{ route('register') }}">Regisztráció</a>
+                    @endif
+                @endguest
 
-@auth
-    <a class="main-link w-nav-link" href="{{ route('dashboard') }}">dashboard</a>
-    @auth
-<a class="main-link w-nav-link" href="{{ route('messages.index') }}">ÜZENETEK</a>
-@endauth
+                @auth
+                    <a class="main-link w-nav-link" href="{{ route('dashboard') }}">dashboard</a>
+                    @admin
+                    <a class="main-link w-nav-link" href="{{ route('admin.pizzak.index') }}">admin</a>
+                @endadmin
 
-    <a class="main-link w-nav-link" href="{{ route('logout') }}"
-       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">logout</a>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-        @csrf
-    </form>
-@endauth
+                    <a class="main-link w-nav-link" href="{{ route('messages.index') }}">ÜZENETEK</a>
+
+
+                    <a class="main-link w-nav-link" href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">logout</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                @endauth
 
             </nav>
             <!-- Main navigation ends -->

@@ -13,15 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rendeles', function (Blueprint $table) {
-            $table->id('az'); // Auto-incrementing ID, 'az' néven
-            $table->string('pizzanev'); // Külső kulcs a pizzas táblához
+            $table->id(); // rendeles.id
+            $table->foreignId('pizza_id')->constrained('pizzas')->onDelete('cascade');
             $table->integer('darab');
             $table->dateTime('felvetel');
-            $table->dateTime('kiszallitas')->nullable(); // Lehet null
-            // Nincs szükség timestamps-re
-
-            // Külső kulcs megkötés (FIGYELEM: a 'pizzas' táblának léteznie kell!)
-            $table->foreign('pizzanev')->references('nev')->on('pizzas')->onDelete('cascade');
+            $table->dateTime('kiszallitas')->nullable();
+            $table->timestamps();
         });
     }
 

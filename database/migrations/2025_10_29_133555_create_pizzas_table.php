@@ -13,10 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pizzas', function (Blueprint $table) {
-            $table->string('nev')->primary(); // Név az elsődleges kulcs
+            $table->id();
+            $table->string('nev');
             $table->string('kategorianev'); // Külső kulcs a kategorias táblához
             $table->boolean('vegetarianus')->default(false);
-            // Nincs szükség timestamps-re
 
             // Külső kulcs megkötés (FIGYELEM: a 'kategorias' táblának léteznie kell!)
             $table->foreign('kategorianev')->references('nev')->on('kategorias')->onDelete('cascade');

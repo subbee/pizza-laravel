@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller; // ✨ EZ HIÁNYZOTT!
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -17,7 +18,7 @@ class MessageController extends Controller
     // Üzenetek listázása
     public function index()
     {
-        $messages = Contact::orderBy('created_at', 'desc')->get();
+        $messages = Contact::where('email', Auth::user()->email)->orderBy('created_at', 'desc')->get(); //Mindenki csak a saját üzenetét látja
         return view('messages.index', compact('messages'));
     }
 }
